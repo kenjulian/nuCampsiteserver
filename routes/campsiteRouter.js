@@ -8,6 +8,7 @@ const campsiteRouter = express.Router();
 campsiteRouter.route('/')
 .get((req, res, next) => {
     Campsite.find()
+    .populate('comments.author')
     .then(campsites => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -42,6 +43,7 @@ campsiteRouter.route('/')
 campsiteRouter.route('/:campsiteId')
 .get((req, res, next) => {
     Campsite.findById(req.params.campsiteId)
+    .populate('comments.author')
     .then(campsite => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -77,6 +79,7 @@ campsiteRouter.route('/:campsiteId')
 campsiteRouter.route('/:campsiteId/comments')
 .get((req, res, next) => {
     Campsite.findById(req.params.campsiteId)
+    .populate('comments.author')
     .then(campsite => {
         if (campsite) {
             res.statusCode = 200;
@@ -140,6 +143,7 @@ campsiteRouter.route('/:campsiteId/comments')
 campsiteRouter.route('/:campsiteId/comments/:commentId')
 .get((req, res, next) => {
     Campsite.findById(req.params.campsiteId)
+    .populate('comments.author')
     .then(campsite => {
         if (campsite && campsite.comments.id(req.params.commentId)) {
             res.statusCode = 200;
